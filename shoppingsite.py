@@ -71,11 +71,21 @@ def shopping_cart():
     #   - keep track of the total amt of the entire order
     # - hand to the template the total order cost and the list of melon types
 
-    # carted_melons = melons.get_by_id(melon_id)
+    total_order_cost = 0
 
-    # session[melon_id] = melon.price
+    for melon_id in session['cart']:
+        melon_name = melons.get_by_id(melon_id).common_name
+        melon_quantity = session['cart'].count(melon_id)
+        melon_price = melons.get_by_id(melon_id).price_str()
+        melon_total = melon_quantity * melon_price
+        total_order_cost += melon_total     
 
-    return render_template("cart.html")
+    return render_template("cart.html", 
+                            name=melon_name,
+                            quantity=melon_quantity,
+                            price=melon_price,
+                            total=melon_total,
+                            order_total=total_order_cost)
 
 
 @app.route("/add_to_cart/<int:melon_id>")
