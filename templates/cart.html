@@ -13,8 +13,10 @@
         </tr>
         </thead>
         <tbody>
+
+        <!-- iterate over list of tuples, each is a row -->
         {% if session['cart'] %}
-            {% for melon in session['cart'] %}
+            {% for melon_tuple in melon_order %}
                 <tr>
                     <td>{{ name }}</td>
                     <td>{{ quantity }}</td>

@@ -71,21 +71,41 @@ def shopping_cart():
     #   - keep track of the total amt of the entire order
     # - hand to the template the total order cost and the list of melon types
 
+
     total_order_cost = 0
 
+    # list of tuples of name, qty, price, total
+    individual_melon_order = []
+    
     for melon_id in session['cart']:
-        melon_name = melons.get_by_id(melon_id).common_name
         melon_quantity = session['cart'].count(melon_id)
-        melon_price = melons.get_by_id(melon_id).price_str()
+        melon_name = melons.get_by_id(melon_id).common_name
+        melon_price = melons.get_by_id(melon_id).price
         melon_total = melon_quantity * melon_price
+        melon_tuple = (melon_name, melon_quantity, melon_price, melon_total)
         total_order_cost += melon_total     
+        if melon_tuple not in individual_melon_order:
+            individual_melon_order.append(melon_tuple)
+
+        # melon_name, melon_quantity, melon_price, melon_total = melon_tuple
+
+    # print individual_melon_order
+    for melon_tuple in individual_melon_order:
+        melon_name, melon_quantity, melon_price, melon_total = melon_tuple
+
+
 
     return render_template("cart.html", 
+                            melon_order=individual_melon_order,
                             name=melon_name,
                             quantity=melon_quantity,
                             price=melon_price,
                             total=melon_total,
                             order_total=total_order_cost)
+    # return render_template("cart.html", 
+    #                         melon_order=individual_melon_order,
+    #                         order_total=total_order_cost)
+
 
 
 @app.route("/add_to_cart/<int:melon_id>")
@@ -105,13 +125,16 @@ def add_to_cart(melon_id):
 
     # session = {'cart': [17, 15, 17]}
 
-    cart = session.get('cart', [])
-    for melon_id in cart: 
-        cart.append(melon_id)
-        flash("Melon successfully added to cart!")
-    session['cart'] = cart
+    # import pdb; pdb.set_trace()
 
-    return render_template("cart.html")
+
+    cart = session.get('cart', [])
+    cart.append(melon_id)
+    flash("Melon successfully added to cart!")
+    session['cart'] = cart
+    print session['cart']
+
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
