@@ -87,25 +87,9 @@ def shopping_cart():
         if melon_tuple not in individual_melon_order:
             individual_melon_order.append(melon_tuple)
 
-        # melon_name, melon_quantity, melon_price, melon_total = melon_tuple
-
-    # print individual_melon_order
-    for melon_tuple in individual_melon_order:
-        melon_name, melon_quantity, melon_price, melon_total = melon_tuple
-
-
-
     return render_template("cart.html", 
                             melon_order=individual_melon_order,
-                            name=melon_name,
-                            quantity=melon_quantity,
-                            price=melon_price,
-                            total=melon_total,
                             order_total=total_order_cost)
-    # return render_template("cart.html", 
-    #                         melon_order=individual_melon_order,
-    #                         order_total=total_order_cost)
-
 
 
 @app.route("/add_to_cart/<int:melon_id>")
@@ -124,9 +108,6 @@ def add_to_cart(melon_id):
 
 
     # session = {'cart': [17, 15, 17]}
-
-    # import pdb; pdb.set_trace()
-
 
     cart = session.get('cart', [])
     cart.append(melon_id)

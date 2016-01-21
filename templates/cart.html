@@ -18,10 +18,10 @@
         {% if session['cart'] %}
             {% for melon_tuple in melon_order %}
                 <tr>
-                    <td>{{ name }}</td>
-                    <td>{{ quantity }}</td>
-                    <td>{{ price }}</td>
-                    <td>{{ total }}</td>
+                    <td>{{ melon_tuple[0] }}</td>
+                    <td>{{ melon_tuple[1] }}</td>
+                    <td>{{ melon_tuple[2] }}</td>
+                    <td>{{ melon_tuple[3] }}</td>
                 </tr>
             {% endfor %}
         {% endif %}
